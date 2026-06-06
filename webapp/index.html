@@ -21,28 +21,27 @@
             margin: 0;
             padding: 0;
             padding-bottom: 80px;
-            user-select: none;
         }
         .container { padding: 15px; }
         .section-title {
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             color: var(--tg-theme-hint-color);
-            margin: 20px 0 10px 5px;
+            margin: 15px 0 8px 5px;
             font-weight: bold;
         }
         .form-group {
             background-color: var(--tg-theme-secondary-bg-color);
             padding: 12px 15px;
             border-radius: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
-        .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 5px; }
         .form-row > div { flex: 1; }
-        label.input-label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--tg-theme-hint-color); }
+        label.input-label { display: block; margin-bottom: 4px; font-size: 12px; color: var(--tg-theme-hint-color); }
         input, select {
             width: 100%;
-            padding: 10px 0;
+            padding: 8px 0;
             border: none;
             border-bottom: 1px solid #ddd;
             background-color: transparent;
@@ -51,18 +50,16 @@
             outline: none;
         }
         .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
-        .checkbox-item {
+        .filter-chip {
             background-color: #fff;
             border: 1px solid #ddd;
             padding: 8px 14px;
             border-radius: 20px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
-            display: inline-block;
+            transition: background-color 0.2s, color 0.2s;
         }
-        .checkbox-item input { display: none; }
-        .checkbox-item.active {
+        .filter-chip.active {
             background-color: var(--tg-theme-button-color);
             color: var(--tg-theme-button-text-color);
             border-color: var(--tg-theme-button-color);
@@ -73,11 +70,11 @@
             padding: 15px;
             background-color: var(--tg-theme-bg-color);
             border-top: 1px solid #ddd;
-            z-index: 100;
+            z-index: 1000;
         }
         button#search-btn {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             background-color: var(--tg-theme-button-color);
             color: var(--tg-theme-button-text-color);
             border: none;
@@ -90,9 +87,8 @@
 </head>
 <body>
     <div class="container">
-        <div class="section-title">📍 Местоположение</div>
+        <div class="section-title">📍 Город</div>
         <div class="form-group">
-            <label class="input-label" for="city">Город</label>
             <select id="city">
                 <option value="1">Тюмень</option>
                 <option value="23">Екатеринбург</option>
@@ -102,46 +98,44 @@
             </select>
         </div>
 
-        <div class="section-title">💰 Цена и Параметры</div>
+        <div class="section-title">🏠 Комнаты</div>
         <div class="form-group">
-            <label class="input-label">Комнатность</label>
-            <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" name="rooms" value="0"> Студия</label>
-                <label class="checkbox-item"><input type="checkbox" name="rooms" value="1"> 1</label>
-                <label class="checkbox-item"><input type="checkbox" name="rooms" value="2"> 2</label>
-                <label class="checkbox-item"><input type="checkbox" name="rooms" value="3"> 3</label>
-                <label class="checkbox-item"><input type="checkbox" name="rooms" value=">4"> 4+</label>
+            <div class="checkbox-group" id="rooms-group">
+                <div class="filter-chip" data-name="rooms" data-value="0">Студия</div>
+                <div class="filter-chip" data-name="rooms" data-value="1">1</div>
+                <div class="filter-chip" data-name="rooms" data-value="2">2</div>
+                <div class="filter-chip" data-name="rooms" data-value="3">3</div>
+                <div class="filter-chip" data-name="rooms" data-value=">4">4+</div>
             </div>
         </div>
 
+        <div class="section-title">💰 Цена (руб.)</div>
         <div class="form-group">
-            <label class="input-label">Цена (руб.)</label>
             <div class="form-row">
                 <div><input type="number" id="price_min" placeholder="От"></div>
                 <div><input type="number" id="price_max" placeholder="До" value="6000000"></div>
             </div>
         </div>
 
-        <div class="section-title">🏢 О доме</div>
+        <div class="section-title">🏗 Год постройки</div>
         <div class="form-group">
-            <label class="input-label">Год постройки</label>
             <div class="form-row">
                 <div><input type="number" id="building_year_min" placeholder="От" value="2000"></div>
                 <div><input type="number" id="building_year_max" placeholder="До"></div>
             </div>
         </div>
 
+        <div class="section-title">🧱 Материал стен</div>
         <div class="form-group">
-            <label class="input-label">Материал стен</label>
-            <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" name="wall_id" value="1"> Кирпич</label>
-                <label class="checkbox-item"><input type="checkbox" name="wall_id" value="2"> Панель</label>
-                <label class="checkbox-item"><input type="checkbox" name="wall_id" value="3"> Блоки</label>
-                <label class="checkbox-item"><input type="checkbox" name="wall_id" value="4"> Монолит</label>
+            <div class="checkbox-group" id="walls-group">
+                <div class="filter-chip" data-name="wall_id" data-value="1">Кирпич</div>
+                <div class="filter-chip" data-name="wall_id" data-value="2">Панель</div>
+                <div class="filter-chip" data-name="wall_id" data-value="4">Монолит</div>
+                <div class="filter-chip" data-name="wall_id" data-value="12">М.-Каркас</div>
             </div>
         </div>
 
-        <div class="section-title">🔑 Квартира</div>
+        <div class="section-title">📐 Площадь и Этаж</div>
         <div class="form-group">
             <label class="input-label">Площадь (м²)</label>
             <div class="form-row">
@@ -155,42 +149,37 @@
             </div>
         </div>
 
+        <div class="section-title">🛠 Ремонт</div>
         <div class="form-group">
-            <label class="input-label">Ремонт</label>
-            <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" name="keep" value="2"> Косм.</label>
-                <label class="checkbox-item"><input type="checkbox" name="keep" value="6"> Совр.</label>
-                <label class="checkbox-item"><input type="checkbox" name="keep" value="8"> Дизайн.</label>
-                <label class="checkbox-item"><input type="checkbox" name="keep" value="10"> Черн.</label>
+            <div class="checkbox-group" id="keep-group">
+                <div class="filter-chip" data-name="keep" data-value="2">Косм.</div>
+                <div class="filter-chip" data-name="keep" data-value="6">Совр.</div>
+                <div class="filter-chip" data-name="keep" data-value="8">Дизайн.</div>
+                <div class="filter-chip" data-name="keep" data-value="10">Черн.</div>
             </div>
         </div>
 
+        <div class="section-title">🔘 Дополнительно</div>
         <div class="form-group">
-            <label class="input-label">Дополнительно</label>
             <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" name="is_owner" value="t"> От собств.</label>
-                <label class="checkbox-item"><input type="checkbox" name="has_photo" value="t"> С фото</label>
+                <div class="filter-chip" data-name="is_owner" data-value="t">Собственник</div>
+                <div class="filter-chip" data-name="has_photo" data-value="t">С фото</div>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <button id="search-btn">Найти объявления</button>
+        <button id="search-btn">Показать предложения</button>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Fix checkbox highlighting and state
-        document.querySelectorAll('.checkbox-item input').forEach(input => {
-            input.addEventListener('change', function() {
-                let label = this.closest('.checkbox-item');
-                if (this.checked) {
-                    label.classList.add('active');
-                } else {
-                    label.classList.remove('active');
-                }
+        // Robust chip toggle logic
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                this.classList.toggle('active');
             });
         });
 
@@ -207,22 +196,27 @@
                 floor_max: document.getElementById('floor_max').value,
             };
 
-            ['rooms', 'wall_id', 'keep'].forEach(name => {
+            // Collect values from chips
+            let groups = ['rooms', 'wall_id', 'keep'];
+            groups.forEach(name => {
                 let values = [];
-                document.querySelectorAll(`input[name="${name}"]:checked`).forEach(cb => {
-                    values.push(cb.value);
+                document.querySelectorAll(`.filter-chip.active[data-name="${name}"]`).forEach(chip => {
+                    values.push(chip.getAttribute('data-value'));
                 });
                 if (values.length > 0) data[name + '[]'] = values;
             });
 
+            // Single boolean-like filters
             ['is_owner', 'has_photo'].forEach(name => {
-                let cb = document.querySelector(`input[name="${name}"]:checked`);
-                if (cb) data[name] = cb.value;
+                let chip = document.querySelector(`.filter-chip.active[data-name="${name}"]`);
+                if (chip) data[name] = chip.getAttribute('data-value');
             });
 
-            // Clean data
+            // Clean data: remove empty strings and empty arrays
             Object.keys(data).forEach(key => {
-                if (!data[key] || (Array.isArray(data[key]) && data[key].length === 0)) delete data[key];
+                if (data[key] === "" || (Array.isArray(data[key]) && data[key].length === 0)) {
+                    delete data[key];
+                }
             });
 
             tg.sendData(JSON.stringify(data));
