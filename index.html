@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Фильтры недвижимости Этажи</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -21,6 +21,7 @@
             margin: 0;
             padding: 0;
             padding-bottom: 80px;
+            user-select: none;
         }
         .container { padding: 15px; }
         .section-title {
@@ -38,7 +39,7 @@
         }
         .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
         .form-row > div { flex: 1; }
-        label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--tg-theme-hint-color); }
+        label.input-label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--tg-theme-hint-color); }
         input, select {
             width: 100%;
             padding: 10px 0;
@@ -53,11 +54,12 @@
         .checkbox-item {
             background-color: #fff;
             border: 1px solid #ddd;
-            padding: 6px 14px;
+            padding: 8px 14px;
             border-radius: 20px;
             font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
+            display: inline-block;
         }
         .checkbox-item input { display: none; }
         .checkbox-item.active {
@@ -73,7 +75,7 @@
             border-top: 1px solid #ddd;
             z-index: 100;
         }
-        button {
+        button#search-btn {
             width: 100%;
             padding: 14px;
             background-color: var(--tg-theme-button-color);
@@ -90,21 +92,20 @@
     <div class="container">
         <div class="section-title">📍 Местоположение</div>
         <div class="form-group">
-            <label for="city">Город</label>
+            <label class="input-label" for="city">Город</label>
             <select id="city">
                 <option value="1">Тюмень</option>
                 <option value="23">Екатеринбург</option>
                 <option value="42">Москва</option>
                 <option value="98">Санкт-Петербург</option>
-                <option value="2">Тобольск</option>
                 <option value="15">Сургут</option>
             </select>
         </div>
 
         <div class="section-title">💰 Цена и Параметры</div>
         <div class="form-group">
-            <label>Комнатность</label>
-            <div class="checkbox-group" id="rooms-group">
+            <label class="input-label">Комнатность</label>
+            <div class="checkbox-group">
                 <label class="checkbox-item"><input type="checkbox" name="rooms" value="0"> Студия</label>
                 <label class="checkbox-item"><input type="checkbox" name="rooms" value="1"> 1</label>
                 <label class="checkbox-item"><input type="checkbox" name="rooms" value="2"> 2</label>
@@ -114,7 +115,7 @@
         </div>
 
         <div class="form-group">
-            <label>Цена (руб.)</label>
+            <label class="input-label">Цена (руб.)</label>
             <div class="form-row">
                 <div><input type="number" id="price_min" placeholder="От"></div>
                 <div><input type="number" id="price_max" placeholder="До" value="6000000"></div>
@@ -123,7 +124,7 @@
 
         <div class="section-title">🏢 О доме</div>
         <div class="form-group">
-            <label>Год постройки</label>
+            <label class="input-label">Год постройки</label>
             <div class="form-row">
                 <div><input type="number" id="building_year_min" placeholder="От" value="2000"></div>
                 <div><input type="number" id="building_year_max" placeholder="До"></div>
@@ -131,28 +132,18 @@
         </div>
 
         <div class="form-group">
-            <label>Материал стен</label>
+            <label class="input-label">Материал стен</label>
             <div class="checkbox-group">
                 <label class="checkbox-item"><input type="checkbox" name="wall_id" value="1"> Кирпич</label>
                 <label class="checkbox-item"><input type="checkbox" name="wall_id" value="2"> Панель</label>
                 <label class="checkbox-item"><input type="checkbox" name="wall_id" value="3"> Блоки</label>
                 <label class="checkbox-item"><input type="checkbox" name="wall_id" value="4"> Монолит</label>
-                <label class="checkbox-item"><input type="checkbox" name="wall_id" value="12"> Монолитно-каркасный</label>
-                <label class="checkbox-item"><input type="checkbox" name="wall_id" value="5"> Дерево</label>
             </div>
         </div>
 
+        <div class="section-title">🔑 Квартира</div>
         <div class="form-group">
-            <label>Этажность дома</label>
-            <div class="form-row">
-                <div><input type="number" id="levels_count_min" placeholder="Этажей от"></div>
-                <div><input type="number" id="levels_count_max" placeholder="До"></div>
-            </div>
-        </div>
-
-        <div class="section-title">🔑 Характеристики квартиры</div>
-        <div class="form-group">
-            <label>Площадь (м²)</label>
+            <label class="input-label">Площадь (м²)</label>
             <div class="form-row">
                 <div><input type="number" id="area_min" placeholder="От"></div>
                 <div><input type="number" id="area_max" placeholder="До"></div>
@@ -160,58 +151,44 @@
         </div>
 
         <div class="form-group">
-            <label>Этаж</label>
-            <div class="form-row">
-                <div><input type="number" id="floor_min" placeholder="От"></div>
-                <div><input type="number" id="floor_max" placeholder="До"></div>
+            <label class="input-label">Ремонт</label>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="keep" value="2"> Косм.</label>
+                <label class="checkbox-item"><input type="checkbox" name="keep" value="6"> Совр.</label>
+                <label class="checkbox-item"><input type="checkbox" name="keep" value="8"> Дизайн.</label>
+                <label class="checkbox-item"><input type="checkbox" name="keep" value="10"> Черн.</label>
             </div>
         </div>
 
         <div class="form-group">
-            <label>Ремонт</label>
+            <label class="input-label">Дополнительно</label>
             <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" name="keep" value="2"> Косметический</label>
-                <label class="checkbox-item"><input type="checkbox" name="keep" value="6"> Современный</label>
-                <label class="checkbox-item"><input type="checkbox" name="keep" value="8"> Дизайнерский</label>
-                <label class="checkbox-item"><input type="checkbox" name="keep" value="10"> Черновая</label>
-                <label class="checkbox-item"><input type="checkbox" name="keep" value="11"> Улучшенная черновая</label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Дополнительно</label>
-            <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" name="is_owner" value="t"> От собственника</label>
+                <label class="checkbox-item"><input type="checkbox" name="is_owner" value="t"> От собств.</label>
                 <label class="checkbox-item"><input type="checkbox" name="has_photo" value="t"> С фото</label>
-                <label class="checkbox-item"><input type="checkbox" name="has_video" value="t"> С видео</label>
-                <label class="checkbox-item"><input type="checkbox" name="online_showing" value="t"> Онлайн показ</label>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label for="type">Тип сделки</label>
-            <select id="type">
-                <option value="">Все (Вторичка + Новостройки)</option>
-                <option value="vtorichka">Вторичка</option>
-                <option value="novostrojki">Новостройки</option>
-            </select>
         </div>
     </div>
 
     <div class="footer">
-        <button id="search-btn">Найти предложения</button>
+        <button id="search-btn">Найти объявления</button>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.MainButton.hide();
 
+        // Fix checkbox highlighting and state
         document.querySelectorAll('.checkbox-item').forEach(item => {
-            item.addEventListener('click', function() {
-                this.classList.toggle('active');
+            item.addEventListener('click', function(e) {
                 let input = this.querySelector('input');
-                input.checked = this.classList.contains('active');
+                if (e.target !== input) {
+                    input.checked = !input.checked;
+                }
+                if (input.checked) {
+                    this.classList.add('active');
+                } else {
+                    this.classList.remove('active');
+                }
             });
         });
 
@@ -224,10 +201,6 @@
                 building_year_max: document.getElementById('building_year_max').value,
                 area_min: document.getElementById('area_min').value,
                 area_max: document.getElementById('area_max').value,
-                floor_min: document.getElementById('floor_min').value,
-                floor_max: document.getElementById('floor_max').value,
-                levels_count_min: document.getElementById('levels_count_min').value,
-                levels_count_max: document.getElementById('levels_count_max').value,
             };
 
             ['rooms', 'wall_id', 'keep'].forEach(name => {
@@ -238,14 +211,12 @@
                 if (values.length > 0) data[name + '[]'] = values;
             });
 
-            ['is_owner', 'has_photo', 'has_video', 'online_showing'].forEach(name => {
+            ['is_owner', 'has_photo'].forEach(name => {
                 let cb = document.querySelector(`input[name="${name}"]:checked`);
                 if (cb) data[name] = cb.value;
             });
 
-            let type = document.getElementById('type').value;
-            if (type) data['type'] = type;
-
+            // Clean data
             Object.keys(data).forEach(key => {
                 if (!data[key] || (Array.isArray(data[key]) && data[key].length === 0)) delete data[key];
             });
