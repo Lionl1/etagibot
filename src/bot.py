@@ -82,7 +82,7 @@ async def handle_web_app_data(message: types.Message):
             
             try:
                 formatted_price = "{:,}".format(int(price)).replace(',', ' ')
-            except:
+            except ValueError:
                 formatted_price = html.escape(price)
 
             rooms = html.escape(str(res['Rooms']))
@@ -107,9 +107,12 @@ async def handle_web_app_data(message: types.Message):
         if len(results) > 15:
             await message.answer(f"Показано первые 15 из {len(results)} найденных объявлений.")
 
-    except Exception as e:
-        logging.error(f"Error handling web app data: {e}")
-        await message.answer(f"⚠️ Ошибка: {e}")
+    except json.JSONDecodeError:
+        logging.warning("Invalid web app data: %r", message.web_app_data.data)
+        await message.answer("⚠️ Не удалось прочитать фильтры. Откройте их заново через кнопку.")
+    except Exception:
+        logging.exception("Error handling web app data")
+        await message.answer("⚠️ Ошибка при поиске. Попробуйте ещё раз позже.")
 
 async def main():
     await dp.start_polling(bot)
