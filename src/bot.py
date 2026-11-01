@@ -16,6 +16,18 @@ load_dotenv()
 API_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 WEBAPP_URL = os.getenv('WEBAPP_URL', 'https://your-github-pages-url.com/webapp/')
 
+
+def parse_user_ids(raw):
+    return {int(part) for part in raw.replace(' ', '').split(',') if part}
+
+
+# Empty list keeps the bot open to everyone.
+ALLOWED_USER_IDS = parse_user_ids(os.getenv('ALLOWED_USER_IDS', ''))
+
+
+def is_allowed(user):
+    return not ALLOWED_USER_IDS or (user is not None and user.id in ALLOWED_USER_IDS)
+
 if not API_TOKEN:
     print("Error: TELEGRAM_BOT_TOKEN environment variable is not set.")
     sys.exit(1)
@@ -28,6 +40,9 @@ scraper = EtagiScraper()
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
+    if not is_allowed(message.from_user):
+        await message.answer("⛔ Доступ к боту закрыт.")
+        return
     # IMPORTANT: Use ReplyKeyboardMarkup for sendData to work
     kb = ReplyKeyboardMarkup(
         keyboard=[
@@ -43,6 +58,9 @@ async def cmd_start(message: types.Message):
 
 @dp.message(F.web_app_data)
 async def handle_web_app_data(message: types.Message):
+    if not is_allowed(message.from_user):
+        await message.answer("⛔ Доступ к боту закрыт.")
+        return
     try:
         raw_data = message.web_app_data.data
         logging.info(f"RECEIVED WEB_APP_DATA: {raw_data}")
