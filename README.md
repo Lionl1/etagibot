@@ -5,7 +5,8 @@
 ## Быстрый запуск
 
 1.  Создайте файл `.env` на основе `.env.example` и укажите ваш `TELEGRAM_BOT_TOKEN`.
-2.  Разместите папку `webapp` на хостинге с HTTPS (например, GitHub Pages) и укажите URL в `WEBAPP_URL` в `.env`.
+2.  Чтобы закрыть бот для посторонних, перечислите свои Telegram `user_id` через запятую в `ALLOWED_USER_IDS` (пусто — доступ у всех).
+3.  Разместите папку `webapp` на хостинге с HTTPS (например, GitHub Pages) и укажите URL в `WEBAPP_URL` в `.env`.
 
 ### Запуск через Docker
 
